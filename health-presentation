@@ -1,0 +1,86 @@
+from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.enum.shapes import MSO_SHAPE
+from pptx.dml.color import RGBColor
+
+# Crear presentación
+prs = Presentation()
+prs.slide_width = Inches(13.33)
+prs.slide_height = Inches(7.5)
+
+# Datos de los 7 tips
+tips = [
+    {
+        "titulo": "1. Come más plantas",
+        "beneficio": "Una dieta basada en plantas reduce el riesgo de enfermedades cardíacas y diabetes.",
+        "cita_egw": "“Los cereales, las frutas, las nueces y las legumbres constituyen la dieta escogida para nosotros por nuestro Creador.” (El Ministerio de Curación, p. 296)",
+        "referencia": "Un estudio en *Journal of the American Heart Association* encontró que las dietas ricas en alimentos vegetales y bajas en animales reducen enfermedades cardiovasculares.",
+        "imagen": "frutas_verduras.jpg"
+    },
+    {
+        "titulo": "2. Camina cada día",
+        "beneficio": "Caminar 30 minutos diarios mejora tu corazón, presión arterial y ánimo.",
+        "cita_egw": "“El ejercicio es indispensable para la salud del cuerpo y de la mente.” (Consejos sobre el Régimen Alimenticio, p. 100)",
+        "referencia": "Según la *Mayo Clinic*, caminar regularmente ayuda a mantener un peso saludable y mejorar el ánimo.",
+        "imagen": "caminar_naturaleza.jpg"
+    },
+    {
+        "titulo": "3. Reduce el estrés con espiritualidad",
+        "beneficio": "La oración, la gratitud y los momentos de silencio reducen el estrés crónico y fortalecen tu salud mental y espiritual.",
+        "cita_egw": "“La oración es el aliento del alma.” (El Camino a Cristo, p. 93)",
+        "referencia": "Estudios han demostrado que la oración regular reduce el estrés y mejora el bienestar emocional.",
+        "imagen": "oracion_naturaleza.jpg"
+    },
+    {
+        "titulo": "4. Duerme como parte de tu salud",
+        "beneficio": "Dormir al menos 7–8 horas mejora tu memoria, regula tus hormonas y fortalece tu sistema inmune.",
+        "cita_egw": "“El sueño, si es tranquilo y reparador, da vigor al cuerpo y a la mente.” (Consejos sobre la Salud, p. 146)",
+        "referencia": "La *CDC* destaca que dormir lo suficiente ayuda a mantener un peso saludable y mejorar el corazón.",
+        "imagen": "sueño_saludable.jpg"
+    },
+    {
+        "titulo": "5. Agua, no solo para el cuerpo",
+        "beneficio": "Mantente bien hidratado para pensar mejor, mantener tu energía y cuidar tus riñones.",
+        "cita_egw": "“El agua es uno de los más excelentes remedios que Dios ha dado al hombre.” (Consejos sobre la Salud, p. 80)",
+        "referencia": "Investigaciones indican que la hidratación adecuada mejora la función cognitiva y el estado de ánimo.",
+        "imagen": "vaso_agua.jpg"
+    },
+    {
+        "titulo": "6. Sol con medida",
+        "beneficio": "La exposición diaria al sol ayuda a producir vitamina D, esencial para los huesos y el sistema inmune.",
+        "cita_egw": "“El sol es uno de los grandes agentes de la vida.” (Consejos sobre la Salud, p. 166)",
+        "referencia": "Estudios han demostrado que la exposición moderada al sol mejora los niveles de vitamina D.",
+        "imagen": "sol_salud.jpg"
+    },
+    {
+        "titulo": "7. Cultiva relaciones",
+        "beneficio": "Las personas con buenas relaciones sociales viven más y con mejor salud.",
+        "cita_egw": "“La sociedad es uno de los medios más eficaces para el desarrollo del carácter.” (La Educación, p. 68)",
+        "referencia": "Investigaciones de Harvard muestran que las conexiones sociales aumentan la longevidad y salud mental.",
+        "imagen": "amistad_salud.jpg"
+    }
+]
+
+# Crear diapositiva por cada tip
+for tip in tips:
+    slide = prs.slides.add_slide(prs.slide_layouts[6])  # Slide en blanco
+
+    title_box = slide.shapes.add_textbox(Inches(0.5), Inches(0.3), Inches(12.5), Inches(1))
+    title_frame = title_box.text_frame
+    title = title_frame.add_paragraph()
+    title.text = tip["titulo"]
+    title.font.size = Pt(36)
+    title.font.bold = True
+    title.font.color.rgb = RGBColor(0, 51, 102)
+
+    content_box = slide.shapes.add_textbox(Inches(0.5), Inches(1.2), Inches(6.5), Inches(5.5))
+    content_frame = content_box.text_frame
+    for label, text in [("Beneficio:", tip["beneficio"]), ("Cita de Elena G. de White:", tip["cita_egw"]),
+                        ("Referencia científica:", tip["referencia"])]:
+        p = content_frame.add_paragraph()
+        p.text = f"{label} {text}"
+        p.space_after = Pt(10)
+        p.level = 0
+        p.font.size = Pt(20)
+
+prs.save("/mnt/data/7_Claves_de_Salud_Detallado.pptx")
